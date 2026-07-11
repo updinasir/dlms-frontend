@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+
+  /* Backgrounds */
+  --app-bg: #F8FAFC;
+  --app-surface: #FFFFFF;
+  --app-surface-secondary: #F1F5F9;
+  --app-sidebar: #000000;
+
+  /* Brand */
+  --app-primary: #2563EB;
+  --app-primary-hover: #1D4ED8;
+  --app-secondary: #3B82F6;
+  --app-accent: #06B6D4;
+
+  /* Status */
+  --app-success: #16A34A;
+  --app-warning: #F59E0B;
+  --app-danger: #DC2626;
+
+  /* Text */
+  --app-text-primary: #1F2937;
+  --app-text-secondary: #64748B;
+
+  /* Borders */
+  --app-border: #E5E7EB;
+
+  /* Shadows */
+  --app-shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --app-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -1px rgba(15, 23, 42, 0.03);
+  --app-shadow-md: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
+  --app-shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 10px 10px -5px rgba(15, 23, 42, 0.02);
+  --app-shadow-xl: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--app-bg);
+    color: var(--app-text-primary);
+    min-height: 100vh;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  ::selection {
+    background: rgba(37, 99, 235, 0.18);
+    color: var(--app-primary);
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 font-semibold transition-all duration-200;
+  }
+  .btn-primary {
+    @apply text-white shadow-md hover:-translate-y-0.5;
+    background: var(--app-primary);
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.25), 0 2px 4px -1px rgba(37, 99, 235, 0.15);
+  }
+  .btn-primary:hover {
+    background: var(--app-primary-hover);
+  }
+  .btn-secondary {
+    @apply hover:-translate-y-0.5 shadow-sm;
+    background: var(--app-surface);
+    color: var(--app-text-secondary);
+    border: 1px solid var(--app-border);
+  }
+  .btn-secondary:hover {
+    border-color: var(--app-primary);
+    color: var(--app-primary);
+  }
+  .btn-danger {
+    @apply text-white shadow-md hover:-translate-y-0.5;
+    background: var(--app-danger);
+    box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.25), 0 2px 4px -1px rgba(220, 38, 38, 0.15);
+  }
+  .card {
+    @apply rounded-xl p-5;
+    background: var(--app-surface);
+    border: 1px solid var(--app-border);
+    box-shadow: var(--app-shadow);
+  }
+  .input {
+    @apply w-full rounded-xl px-4 py-3 outline-none transition shadow-sm;
+    background: var(--app-surface);
+    border: 1px solid var(--app-border);
+    color: var(--app-text-primary);
+  }
+  .input:focus {
+    border-color: var(--app-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  }
+  .select {
+    @apply w-full rounded-xl px-4 py-3 outline-none transition shadow-sm;
+    background: var(--app-surface);
+    border: 1px solid var(--app-border);
+    color: var(--app-text-primary);
+  }
+  .select:focus {
+    border-color: var(--app-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  }
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold;
+  }
+  .badge-success {
+    background: rgba(22, 163, 74, 0.12);
+    color: var(--app-success);
+  }
+  .badge-warning {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--app-warning);
+  }
+  .badge-danger {
+    background: rgba(220, 38, 38, 0.12);
+    color: var(--app-danger);
+  }
+  .badge-info {
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--app-primary);
+  }
+  .table-container {
+    @apply overflow-x-auto;
+  }
+  .data-table {
+    @apply min-w-full divide-y;
+    border-color: var(--app-border);
+  }
+  .data-table th {
+    @apply px-6 py-4 text-left text-[11px] font-bold uppercase tracking-[0.18em];
+    color: var(--app-text-secondary);
+  }
+  .data-table td {
+    @apply px-6 py-4 whitespace-nowrap text-sm;
+    color: var(--app-text-primary);
+  }
+  .data-table tr + tr {
+    border-top: 1px solid var(--app-border);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--app-surface-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--app-primary);
+  border-radius: 999px;
+  opacity: 0.7;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--app-primary-hover);
+  opacity: 1;
+}
