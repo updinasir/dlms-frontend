@@ -28,14 +28,26 @@ const LicenseForm = () => {
   const [checkingDuplicate, setCheckingDuplicate] = useState(false)
   const [duplicateLicense, setDuplicateLicense] = useState(false)
   const [examStatus, setExamStatus] = useState(null)
+  const [nextNumber, setNextNumber] = useState('')
 
   useEffect(() => {
     fetchCategories()
     fetchDrivers()
     if (isEdit) {
       fetchLicense()
+    } else {
+      fetchNextNumber()
     }
   }, [id])
+
+  const fetchNextNumber = async () => {
+    try {
+      const response = await api.get('/licenses/next-number')
+      setNextNumber(response.data.license_number || '')
+    } catch (error) {
+      console.error('Error fetching next license number:', error)
+    }
+  }
 
   const fetchCategories = async () => {
     try {
@@ -327,7 +339,7 @@ const LicenseForm = () => {
                 <input
                   type="text"
                   name="license_number"
-                  value={isEdit ? formData.license_number : 'Auto-generated (e.g. SL-000001)'}
+                  value={isEdit ? formData.license_number : (nextNumber || 'Generating...')}
                   className="input bg-gray-100 text-gray-500 cursor-not-allowed"
                   readOnly
                   disabled
