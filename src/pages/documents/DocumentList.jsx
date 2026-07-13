@@ -24,7 +24,7 @@ const DocumentList = () => {
     file: null
   })
 
-  const documentTypes = ['National ID', 'Passport', 'Medical Certificate', 'Photo']
+  const documentTypes = ['National ID', 'Passport', 'Medical Certificate']
 
   const fetchDocuments = async () => {
     setLoading(true)
