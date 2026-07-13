@@ -26,7 +26,7 @@ const ChangePassword = () => {
       const payload = isForced
         ? { newPassword: formData.newPassword }
         : { currentPassword: formData.currentPassword, newPassword: formData.newPassword }
-      await api.post('/auth/change-password', payload)
+      await api.put('/auth/change-password', payload)
       toast.success('Password changed successfully. Please log in again.')
       updateUser({ must_change_password: false })
       logout()
