@@ -2,13 +2,14 @@
 import { useParams, Link } from 'react-router-dom'
 import api from '../../api/axios'
 import toast from 'react-hot-toast'
-import { ArrowLeft, Edit, QrCode, Download, Calendar, CreditCard, User, BadgeCheck, MapPin } from 'lucide-react'
+import { ArrowLeft, Edit, QrCode, Download, Calendar, CreditCard, User, BadgeCheck, MapPin, Mail } from 'lucide-react'
 import QRCode from 'qrcode.react'
 
 const LicenseDetail = () => {
   const { id } = useParams()
   const [license, setLicense] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [sendingNotice, setSendingNotice] = useState(false)
 
   useEffect(() => {
     fetchLicense()
@@ -27,6 +28,19 @@ const LicenseDetail = () => {
 
   const handlePrint = () => {
     window.print()
+  }
+
+  const handleSendExpiryNotice = async () => {
+    if (!window.confirm("Send a renewal notice (email + portal) to this driver?")) return
+    setSendingNotice(true)
+    try {
+      const res = await api.post(`/licenses/${id}/send-expiry-notice`)
+      toast.success(res.data.message || 'Renewal notice sent to the driver')
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to send renewal notice')
+    } finally {
+      setSendingNotice(false)
+    }
   }
 
   if (loading) {
@@ -87,6 +101,14 @@ const LicenseDetail = () => {
           >
             <Download className="w-5 h-5" />
             <span>Print</span>
+          </button>
+          <button
+            onClick={handleSendExpiryNotice}
+            disabled={sendingNotice}
+            className="btn btn-secondary flex items-center space-x-2"
+          >
+            <Mail className="w-5 h-5" />
+            <span>{sendingNotice ? 'Sending...' : 'Send Renewal Notice'}</span>
           </button>
           <Link to={`/dashboard/licenses/${id}/edit`} className="btn btn-primary flex items-center space-x-2">
             <Edit className="w-5 h-5" />
