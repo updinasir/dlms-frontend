@@ -147,9 +147,6 @@ const LicenseForm = () => {
     if (!formData.driver_id) {
       errors.driver_id = 'Driver is required'
     }
-    if (!/^SL-\d{6}$/.test(formData.license_number)) {
-      errors.license_number = 'Format must be SL-123456'
-    }
     if (!formData.category_id) {
       errors.category_id = 'Category is required'
     }
@@ -163,11 +160,6 @@ const LicenseForm = () => {
       if (new Date(formData.issue_date) >= new Date(formData.expiry_date)) {
         errors.expiry_date = 'Expiry date must be after issue date'
       }
-    }
-
-    // Check duplicate license number
-    if (duplicateLicense) {
-      errors.license_number = 'This license number is already in use'
     }
 
     // Check business rule: driver must pass both exams
@@ -185,7 +177,6 @@ const LicenseForm = () => {
     try {
       const payload = {
         driver_id: formData.driver_id,
-        license_number: formData.license_number,
         category_id: formData.category_id,
         issue_date: formData.issue_date,
         expiry_date: formData.expiry_date,
@@ -336,31 +327,14 @@ const LicenseForm = () => {
                 <input
                   type="text"
                   name="license_number"
-                  value={formData.license_number}
-                  onChange={(e) => {
-                    const value = e.target.value.toUpperCase()
-                    // Auto-format: SL- prefix + 6 digits
-                    const body = value.replace(/^SL-?/, '').replace(/[^0-9]/g, '')
-                    const digits = body.slice(0, 6)
-                    setFormData(prev => ({ ...prev, license_number: `SL-${digits}` }))
-                    handleChange({ target: { name: 'license_number', value: `SL-${digits}` } })
-                  }}
-                  className={`input ${validationErrors.license_number || duplicateLicense ? 'border-red-500 focus:border-red-500' : ''}`}
-                  placeholder="License number (e.g. SL-123456)"
-                  required
-                  maxLength={9}
+                  value={isEdit ? formData.license_number : 'Auto-generated (e.g. SL-000001)'}
+                  className="input bg-gray-100 text-gray-500 cursor-not-allowed"
+                  readOnly
+                  disabled
                 />
-                <p className="mt-1 text-xs text-gray-500">Format: SL-123456 (auto-formatted)</p>
-                {validationErrors.license_number && (
-                  <p className="mt-1 text-xs text-red-600 flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" /> {validationErrors.license_number}
-                  </p>
-                )}
-                {duplicateLicense && !validationErrors.license_number && (
-                  <p className="mt-1 text-xs text-amber-600 flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" /> This license number is already in use
-                  </p>
-                )}
+                <p className="mt-1 text-xs text-gray-500">
+                  License number is generated automatically and cannot be edited.
+                </p>
               </div>
               <div>
                 <select
