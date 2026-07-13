@@ -201,6 +201,21 @@ const LicenseForm = () => {
       } else {
         await api.post('/licenses', payload)
         toast.success('License successfully created')
+        // Clear form and fetch next license number for next creation
+        setFormData({
+          driver_id: '',
+          driver_name: '',
+          license_number: '',
+          category_id: '',
+          issue_date: '',
+          expiry_date: '',
+          license_status: 'Pending'
+        })
+        setExamStatus(null)
+        await fetchNextNumber()
+        // Don't navigate - stay on form to create another license
+        setLoading(false)
+        return
       }
       setTimeout(() => navigate('/dashboard/licenses'), 500)
     } catch (error) {
